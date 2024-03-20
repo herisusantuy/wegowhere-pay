@@ -1,13 +1,28 @@
-import React from "react";
-import { View, Text } from "react-native";
-import { ScreenProps } from "@/navigations/root-stack";
+import React, { useEffect } from "react";
+import { View, StyleSheet } from "react-native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useNavigation } from "@react-navigation/native";
 
-const CardsList: ScreenProps<"CardsList"> = () => {
+import EmptyCard from "@/components/empty-card";
+import { RootStackParam } from "@/navigations/root-stack";
+
+type ScreenNavigationProps = NativeStackNavigationProp<RootStackParam>;
+
+const CardsList = () => {
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Cards List Screen</Text>
+    <View style={styles.container}>
+      <EmptyCard />
     </View>
   );
 };
 
 export default CardsList;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
+  },
+});
