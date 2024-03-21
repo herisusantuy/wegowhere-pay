@@ -1,14 +1,17 @@
-import React, { FC } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { FC, useState } from "react";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import CardIcon from "./card-icon";
 import { Token } from "@/redux/slice/card";
+import PaymentModal from "./payment-modal";
 
 type Props = {
   token: Token;
 };
 
 const Card: FC<Props> = ({ token }: Props) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
   const render4Dots = () => {
     return (
       <View style={{ flexDirection: "row" }}>
@@ -23,7 +26,15 @@ const Card: FC<Props> = ({ token }: Props) => {
     "/" +
     token.card.expiration_year.toString().split("").slice(2, 4).join("");
   return (
-    <View style={[styles.container, styles.shadowProp]}>
+    <TouchableOpacity
+      style={[styles.container, styles.shadowProp]}
+      onPress={() => setIsModalVisible(!isModalVisible)}
+    >
+      <PaymentModal
+        token={token}
+        isModalVisible={isModalVisible}
+        onBackdropPress={() => setIsModalVisible(false)}
+      />
       <View style={styles.header}>
         <CardIcon cardType={token.card.brand.toLowerCase()} />
       </View>
@@ -49,7 +60,7 @@ const Card: FC<Props> = ({ token }: Props) => {
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
