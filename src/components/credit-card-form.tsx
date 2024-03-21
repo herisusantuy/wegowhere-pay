@@ -14,6 +14,8 @@ import {
   cardNumberFormatter,
   expirationDateFormatter,
 } from "@/utils/formatters";
+import { useAppDispatch } from "@/redux/store/hooks";
+import { addCard } from "@/redux/slice/card";
 
 interface FormModel {
   holderName: string;
@@ -22,6 +24,7 @@ interface FormModel {
   cvv: string;
 }
 const CreditCardForm: React.FC = () => {
+  const dispatch = useAppDispatch();
   const formMethods = useForm<FormModel>({
     mode: "onChange",
     defaultValues: {
@@ -36,7 +39,7 @@ const CreditCardForm: React.FC = () => {
   const cardType = cardValidator.number(cardNumber).card?.niceType;
 
   function onSubmit(model: FormModel) {
-    console.log("form submitted", model);
+    dispatch(addCard(model));
   }
   return (
     <View style={styles.container}>

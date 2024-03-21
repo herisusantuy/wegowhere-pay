@@ -20,7 +20,7 @@ const Card: FC<Props> = ({ card }: Props) => {
     return (
       <View style={{ flexDirection: "row" }}>
         {[1, 2, 3, 4].map((el, index) => (
-          <Entypo name="dot-single" size={20} color="black" />
+          <Entypo key={index} name="dot-single" size={20} color="black" />
         ))}
       </View>
     );

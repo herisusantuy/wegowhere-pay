@@ -5,38 +5,22 @@ import { useNavigation } from "@react-navigation/native";
 
 import EmptyCard from "@/components/empty-card";
 import Card from "@/components/card";
-import { RootStackParam } from "@/navigations/root-stack";
+import { useAppSelector } from "@/redux/store/hooks";
 
-type ScreenNavigationProps = NativeStackNavigationProp<RootStackParam>;
-const cards = [
-  {
-    cardNumber: String(3530111333300000),
-    holderName: "John Doe",
-    expiration: "12/25",
-    cvv: "123",
-  },
-  {
-    cardNumber: String(5555555555554444),
-    holderName: "John Doe",
-    expiration: "12/25",
-    cvv: "123",
-  },
-  {
-    cardNumber: String(4111111111111111),
-    holderName: "John Doe",
-    expiration: "12/25",
-    cvv: "123",
-  },
-];
 const CardsList = () => {
+  const { cards } = useAppSelector((state) => state.card);
   return (
     <View style={styles.container}>
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        data={cards}
-        renderItem={({ item, index }) => <Card key={index} card={item} />}
-        keyExtractor={(item, index) => "key" + index}
-      />
+      {cards.length > 0 ? (
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={cards}
+          renderItem={({ item, index }) => <Card key={index} card={item} />}
+          keyExtractor={(item, index) => "key" + index}
+        />
+      ) : (
+        <EmptyCard />
+      )}
     </View>
   );
 };
