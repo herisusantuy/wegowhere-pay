@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
@@ -17,6 +18,8 @@ export type RootStackParam = {
 export type ScreenProps<T extends keyof RootStackParam> = FC<
   NativeStackScreenProps<RootStackParam, T>
 >;
+
+export type ScreenNavigationProps = NativeStackNavigationProp<RootStackParam>;
 
 const Stack = createNativeStackNavigator<RootStackParam>();
 

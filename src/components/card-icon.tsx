@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from "react";
+import React from "react";
 import { Image, StyleSheet } from "react-native";
 import cardValidator from "card-validator";
 

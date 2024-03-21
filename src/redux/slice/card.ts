@@ -1,25 +1,20 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type Card = {
+export type TCard = {
   holderName: string;
   cardNumber: string;
   expiration: string;
   cvv: string;
 };
 
-type InitialState = {
-  loading: boolean;
-  cards: [Card];
-};
-
 const cardSlice = createSlice({
   name: "card",
   initialState: {
     loading: true,
-    cards: [] as Card[],
+    cards: [] as TCard[],
   },
   reducers: {
-    addCard: (state, action: PayloadAction<Card>) => {
+    addCard: (state, action: PayloadAction<TCard>) => {
       state.cards = [...state.cards, action.payload];
     },
   },

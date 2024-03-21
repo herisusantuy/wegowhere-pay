@@ -1,11 +1,8 @@
 import React from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
-import { RootStackParam } from "@/navigations/root-stack";
-
-type ScreenNavigationProps = NativeStackNavigationProp<RootStackParam>;
+import { ScreenNavigationProps } from "@/navigations/root-stack";
 
 const EmptyCard = () => {
   const navigation = useNavigation<ScreenNavigationProps>();

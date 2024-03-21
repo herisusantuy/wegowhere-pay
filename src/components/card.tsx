@@ -1,18 +1,11 @@
 import React, { FC } from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Entypo } from "@expo/vector-icons";
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-
-import { RootStackParam } from "@/navigations/root-stack";
 import CardIcon from "./card-icon";
-type Card = {
-  holderName: string;
-  cardNumber: string;
-  expiration: string;
-  cvv: string;
-};
+import { TCard } from "@/redux/slice/card";
+
 type Props = {
-  card: Card;
+  card: TCard;
 };
 
 const Card: FC<Props> = ({ card }: Props) => {
@@ -44,7 +37,7 @@ const Card: FC<Props> = ({ card }: Props) => {
           </Text>
         </View>
         <View style={styles.content}>
-          <View style={{ flex: 0.4 }}>
+          <View style={{ flex: 0.6 }}>
             <Text style={styles.key}>Name on Card</Text>
             <Text style={styles.value}>{card.holderName}</Text>
           </View>

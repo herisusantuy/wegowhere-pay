@@ -1,7 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { View, StyleSheet, FlatList } from "react-native";
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useNavigation } from "@react-navigation/native";
 
 import EmptyCard from "@/components/empty-card";
 import Card from "@/components/card";

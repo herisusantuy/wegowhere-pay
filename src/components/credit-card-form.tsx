@@ -1,21 +1,17 @@
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  Button,
-  Image,
-  TouchableOpacity,
-  Text,
-} from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity, Text } from "react-native";
 import { useForm, FormProvider } from "react-hook-form";
 import cardValidator from "card-validator";
+import { useNavigation } from "@react-navigation/native";
 import FormTextField from "./form-text-field";
+
 import {
   cardNumberFormatter,
   expirationDateFormatter,
 } from "@/utils/formatters";
 import { useAppDispatch } from "@/redux/store/hooks";
 import { addCard } from "@/redux/slice/card";
+import { ScreenNavigationProps } from "@/navigations/root-stack";
 
 interface FormModel {
   holderName: string;
@@ -25,6 +21,7 @@ interface FormModel {
 }
 const CreditCardForm: React.FC = () => {
   const dispatch = useAppDispatch();
+  const navigation = useNavigation<ScreenNavigationProps>();
   const formMethods = useForm<FormModel>({
     mode: "onChange",
     defaultValues: {
@@ -40,6 +37,7 @@ const CreditCardForm: React.FC = () => {
 
   function onSubmit(model: FormModel) {
     dispatch(addCard(model));
+    navigation.navigate("CardsList");
   }
   return (
     <View style={styles.container}>
