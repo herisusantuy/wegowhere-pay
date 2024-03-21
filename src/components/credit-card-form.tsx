@@ -12,6 +12,7 @@ import {
 import { useAppDispatch } from "@/redux/store/hooks";
 import { addCard } from "@/redux/slice/card";
 import { ScreenNavigationProps } from "@/navigations/root-stack";
+import { createTokenAction } from "@/redux/action/cardAction";
 
 interface FormModel {
   holderName: string;
@@ -35,10 +36,15 @@ const CreditCardForm: React.FC = () => {
   const cardNumber = formMethods.watch("cardNumber");
   const cardType = cardValidator.number(cardNumber).card?.niceType;
 
-  function onSubmit(model: FormModel) {
-    dispatch(addCard(model));
-    navigation.navigate("CardsList");
-  }
+  const onSubmit = async (model: FormModel) => {
+    const response = await dispatch(createTokenAction(model));
+
+    if (response.type == "createTokenAction/fulfilled") {
+      navigation.navigate("CardsList");
+    } else {
+      console.log("Error");
+    }
+  };
   return (
     <View style={styles.container}>
       <FormProvider {...formMethods}>

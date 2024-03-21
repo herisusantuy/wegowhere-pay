@@ -2,13 +2,13 @@ import React, { FC } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import CardIcon from "./card-icon";
-import { TCard } from "@/redux/slice/card";
+import { Token } from "@/redux/slice/card";
 
 type Props = {
-  card: TCard;
+  token: Token;
 };
 
-const Card: FC<Props> = ({ card }: Props) => {
+const Card: FC<Props> = ({ token }: Props) => {
   const render4Dots = () => {
     return (
       <View style={{ flexDirection: "row" }}>
@@ -18,28 +18,26 @@ const Card: FC<Props> = ({ card }: Props) => {
       </View>
     );
   };
+  const expiration =
+    token.card.expiration_month.toString() +
+    "/" +
+    token.card.expiration_year.toString().split("").slice(2, 4).join("");
   return (
     <View style={[styles.container, styles.shadowProp]}>
       <View style={styles.header}>
-        <CardIcon cardNumber={card.cardNumber} />
+        <CardIcon cardType={token.card.brand.toLowerCase()} />
       </View>
-
       <View>
         <View style={styles.digitContainer}>
           {render4Dots()}
           {render4Dots()}
           {render4Dots()}
-          <Text>
-            {card.cardNumber.slice(
-              card.cardNumber.length - 4,
-              card.cardNumber.length
-            )}
-          </Text>
+          <Text>{token.card.last_digits}</Text>
         </View>
         <View style={styles.content}>
           <View style={{ flex: 0.6 }}>
             <Text style={styles.key}>Name on Card</Text>
-            <Text style={styles.value}>{card.holderName}</Text>
+            <Text style={styles.value}>{token.card.name}</Text>
           </View>
           <View
             style={{
@@ -47,7 +45,7 @@ const Card: FC<Props> = ({ card }: Props) => {
             }}
           >
             <Text style={styles.key}>Expires</Text>
-            <Text style={styles.value}>{card.expiration}</Text>
+            <Text style={styles.value}>{expiration}</Text>
           </View>
         </View>
       </View>

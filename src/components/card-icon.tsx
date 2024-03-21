@@ -1,9 +1,8 @@
 import React from "react";
 import { Image, StyleSheet } from "react-native";
-import cardValidator from "card-validator";
 
 type Props = {
-  cardNumber: string;
+  cardType: string;
 };
 type Card = {
   icon: number;
@@ -22,10 +21,9 @@ export const cards: Record<string, Card> = {
 };
 
 const CardIcon: React.FC<Props> = (props) => {
-  const { cardNumber } = props;
-  const { card } = cardValidator.number(cardNumber);
+  const { cardType } = props;
 
-  const data: Card = cards[card?.type || -1];
+  const data: Card = cards[cardType || -1];
 
   return <Image style={styles.icon} source={data.icon} />;
 };

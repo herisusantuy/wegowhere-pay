@@ -6,14 +6,15 @@ import Card from "@/components/card";
 import { useAppSelector } from "@/redux/store/hooks";
 
 const CardsList = () => {
-  const { cards } = useAppSelector((state) => state.card);
+  const { tokens } = useAppSelector((state) => state.card);
+
   return (
     <View style={styles.container}>
-      {cards.length > 0 ? (
+      {tokens && tokens.length > 0 ? (
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={cards}
-          renderItem={({ item, index }) => <Card key={index} card={item} />}
+          data={tokens}
+          renderItem={({ item, index }) => <Card key={index} token={item} />}
           keyExtractor={(item, index) => "key" + index}
         />
       ) : (
