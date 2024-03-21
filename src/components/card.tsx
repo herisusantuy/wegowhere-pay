@@ -1,40 +1,60 @@
 import React, { FC } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { Entypo } from "@expo/vector-icons";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 import { RootStackParam } from "@/navigations/root-stack";
-import { maskNumber } from "@/utils";
-
-type ScreenNavigationProps = NativeStackNavigationProp<RootStackParam>;
+import CardIcon from "./card-icon";
 type Card = {
-  account: number;
-  name: string;
-  expires: string;
+  holderName: string;
+  cardNumber: string;
+  expiration: string;
+  cvv: string;
 };
 type Props = {
   card: Card;
 };
 
 const Card: FC<Props> = ({ card }: Props) => {
-  const navigation = useNavigation<ScreenNavigationProps>();
-  const handleAddNewCard = () => navigation.navigate("AddCard");
+  const render4Dots = () => {
+    return (
+      <View style={{ flexDirection: "row" }}>
+        {[1, 2, 3, 4].map((el, index) => (
+          <Entypo name="dot-single" size={20} color="black" />
+        ))}
+      </View>
+    );
+  };
   return (
     <View style={[styles.container, styles.shadowProp]}>
       <View style={styles.header}>
-        <Image source={require("../../assets/visa_h16_color.png")} />
+        <CardIcon cardNumber={card.cardNumber} />
       </View>
 
       <View>
-        <Text style={styles.account}>{maskNumber(card.account)}</Text>
+        <View style={styles.digitContainer}>
+          {render4Dots()}
+          {render4Dots()}
+          {render4Dots()}
+          <Text>
+            {card.cardNumber.slice(
+              card.cardNumber.length - 4,
+              card.cardNumber.length
+            )}
+          </Text>
+        </View>
         <View style={styles.content}>
           <View style={{ flex: 0.4 }}>
             <Text style={styles.key}>Name on Card</Text>
-            <Text style={styles.value}>{card.name}</Text>
+            <Text style={styles.value}>{card.holderName}</Text>
           </View>
-          <View style={{ flex: 0.3 }}>
+          <View
+            style={{
+              justifyContent: "flex-end",
+            }}
+          >
             <Text style={styles.key}>Expires</Text>
-            <Text style={styles.value}>{card.expires}</Text>
+            <Text style={styles.value}>{card.expiration}</Text>
           </View>
         </View>
       </View>
@@ -59,17 +79,18 @@ const styles = StyleSheet.create({
     shadowColor: "#171717",
     shadowOffset: { width: -2, height: 4 },
     shadowOpacity: 0.2,
-    shadowRadius: 6,
+    shadowRadius: 3,
   },
   header: {
     width: "100%",
     justifyContent: "flex-start",
-    paddingVertical: 10,
+    paddingVertical: 5,
   },
   content: {
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
+    paddingLeft: 5,
   },
   key: {
     fontSize: 10,
@@ -85,5 +106,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
     paddingVertical: 15,
     fontWeight: "400",
+  },
+  digitContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginVertical: 10,
+    alignItems: "center",
   },
 });

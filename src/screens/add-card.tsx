@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { ScreenProps } from "@/navigations/root-stack";
-import AntDesign from "@expo/vector-icons/AntDesign";
+import CreditCardForm from "@/components/credit-card-form";
 
 const AddCard: ScreenProps<"AddCard"> = () => {
   return (
@@ -11,10 +11,10 @@ const AddCard: ScreenProps<"AddCard"> = () => {
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "white",
+        padding: 15,
       }}
     >
-      <Text>Add Card Screen</Text>
-      <AntDesign name="plus" size={32} color="green" />
+      <CreditCardForm />
     </View>
   );
 };
