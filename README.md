@@ -3,6 +3,11 @@
 ## Description
 This app lets you simulate adding credit or debit cards and paying random amounts. It integrates with the Opn Payment API, giving you a hands-on experience with secure payment processing.
 
+## How to run the project
+-  Run npm install
+-  Run npm run start --reset-cache
+-  Press i in the terminal to run on iOS Simulator
+-  Press a in terminal to run on Android Emulator
 
 ## Features
 -  Add a card
@@ -11,9 +16,9 @@ This app lets you simulate adding credit or debit cards and paying random amount
 
   
 ## Package Dependencies
--  Redux Toolkit
 -  Expo
 -  React Navigation
+-  Redux Toolkit
 -  Axios
 -  Card validator
 -  React hook form
