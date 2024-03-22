@@ -1,4 +1,5 @@
 # WeGowhere Pay
+![Preview](https://github.com/herisusantuy/wegowhere-pay/blob/master/assets/preview.gif)
 ## Description
 This app lets you simulate adding credit or debit cards and paying random amounts. It integrates with the Opn Payment API, giving you a hands-on experience with secure payment processing.
 
