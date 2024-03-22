@@ -1,5 +1,12 @@
 import React from "react";
-import { View, StyleSheet, Image, TouchableOpacity, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Text,
+  Alert,
+} from "react-native";
 import { useForm, FormProvider } from "react-hook-form";
 import cardValidator from "card-validator";
 import { useNavigation } from "@react-navigation/native";
@@ -42,7 +49,9 @@ const CreditCardForm: React.FC = () => {
     if (response.type == "createTokenAction/fulfilled") {
       navigation.navigate("CardsList");
     } else {
-      console.log("Error");
+      Alert.alert("Alert", "Failed to create token! ", [], {
+        cancelable: true,
+      });
     }
   };
   return (
@@ -162,17 +171,14 @@ const CreditCardForm: React.FC = () => {
           }}
         >
           <TouchableOpacity
-            style={{
-              backgroundColor: "#4AD8DA",
-              justifyContent: "center",
-              alignItems: "center",
-              padding: 15,
-              borderRadius: 50,
-            }}
+            style={styles.buttonContainer}
             onPress={formMethods.handleSubmit(onSubmit)}
+            disabled={formMethods.formState.isSubmitting}
           >
             <Text style={{ color: "white", fontWeight: "600", fontSize: 18 }}>
-              Add Card
+              {formMethods.formState.isSubmitting
+                ? "Processing..."
+                : " Add Card"}
             </Text>
           </TouchableOpacity>
         </View>
@@ -207,6 +213,13 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 8,
     borderBottomRightRadius: 24,
     backgroundColor: "#0093E9",
+  },
+  buttonContainer: {
+    backgroundColor: "#4AD8DA",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 15,
+    borderRadius: 50,
   },
 });
 

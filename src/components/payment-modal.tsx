@@ -1,4 +1,6 @@
+import { createChargesAction } from "@/redux/action/cardAction";
 import { Token } from "@/redux/slice/card";
+import { useAppDispatch, useAppSelector } from "@/redux/store/hooks";
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -6,6 +8,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import Modal from "react-native-modal";
 
@@ -29,6 +32,8 @@ const CreditCardModal: React.FC<Props> = ({
   token,
   onBackdropPress,
 }) => {
+  const dispatch = useAppDispatch();
+  const { loading } = useAppSelector((state) => state.card);
   const [creditCardInfo, setCreditCardInfo] = useState<CreditCardInfo>({
     cardNumber: "",
     cardName: "",
@@ -41,12 +46,30 @@ const CreditCardModal: React.FC<Props> = ({
   const handleInputChange = (name: keyof CreditCardInfo, value: string) => {
     setCreditCardInfo({ ...creditCardInfo, [name]: value });
   };
+  const randomBill = Math.random() * (15000000 - 2000) + 2000;
 
-  const handlePayButton = () => {
-    onBackdropPress();
+  const handlePayButton = async () => {
+    const response = await dispatch(
+      createChargesAction({
+        amount: String(randomBill),
+        currency: "thb",
+        card: token.id,
+      })
+    );
+
+    if (response.type == "createChargesAction/fulfilled") {
+      Alert.alert("Info", "Successfully pay the bill! ", [
+        { text: "OK", onPress: () => onBackdropPress() },
+      ]);
+    }
+
+    if (response.type == "createChargesAction/rejected") {
+      Alert.alert("Alert", `Failed to pay the bill! ${response.payload}`, [
+        { text: "Cancel", onPress: () => onBackdropPress() },
+      ]);
+    }
   };
 
-  const randomBill = Math.random() * (100 - 10) + 10;
   const expiryDate =
     token.card.expiration_month.toString() +
     "/" +
@@ -61,10 +84,8 @@ const CreditCardModal: React.FC<Props> = ({
             <TextInput
               style={styles.textInput}
               placeholder="**** **** **** ****"
-              keyboardType="numeric"
               maxLength={16}
-              value={token.card.last_digits}
-              onChangeText={(text) => handleInputChange("cardNumber", text)}
+              value={token.card.card_number}
               editable={false}
               selectTextOnFocus={false}
             />
@@ -75,7 +96,6 @@ const CreditCardModal: React.FC<Props> = ({
               style={styles.textInput}
               placeholder="Jane Doe"
               value={token.card.name}
-              onChangeText={(text) => handleInputChange("cardName", text)}
               editable={false}
               selectTextOnFocus={false}
             />
@@ -88,10 +108,8 @@ const CreditCardModal: React.FC<Props> = ({
               <TextInput
                 style={styles.textInput}
                 placeholder="MM/YY"
-                keyboardType="numeric"
                 maxLength={3}
                 value={expiryDate}
-                onChangeText={(text) => handleInputChange("securityCode", text)}
                 editable={false}
                 selectTextOnFocus={false}
               />
@@ -101,10 +119,8 @@ const CreditCardModal: React.FC<Props> = ({
               <TextInput
                 style={styles.textInput}
                 placeholder="***"
-                keyboardType="numeric"
                 maxLength={3}
-                // value={token.card.}
-                onChangeText={(text) => handleInputChange("securityCode", text)}
+                value={token.card.security_code}
                 editable={false}
                 selectTextOnFocus={false}
               />
@@ -117,7 +133,6 @@ const CreditCardModal: React.FC<Props> = ({
               style={styles.textInput}
               placeholder="Thailand"
               value="Thailand"
-              onChangeText={(text) => handleInputChange("country", text)}
               editable={false}
               selectTextOnFocus={false}
             />
@@ -125,10 +140,16 @@ const CreditCardModal: React.FC<Props> = ({
           <TouchableOpacity
             style={styles.submitButton}
             onPress={handlePayButton}
+            disabled={loading}
           >
-            <Text style={styles.submitButtonText}>{`Pay ${randomBill.toFixed(
-              2
-            )} THB`}</Text>
+            <Text style={styles.submitButtonText}>
+              {loading
+                ? "Processing.."
+                : `Pay ${randomBill.toLocaleString("en-US", {
+                    style: "currency",
+                    currency: "THB",
+                  })}`}
+            </Text>
           </TouchableOpacity>
         </View>
       </Modal>
@@ -158,7 +179,8 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontSize: 20,
-    marginBottom: 10,
+    marginBottom: 20,
+    fontWeight: "700",
   },
   formGroup: {
     marginBottom: 15,
@@ -186,6 +208,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   submitButton: {
+    marginTop: 20,
     backgroundColor: "#4AD8DA",
     padding: 15,
     borderRadius: 50,

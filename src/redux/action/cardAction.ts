@@ -4,15 +4,17 @@ import { Buffer } from "buffer";
 import { TCard } from "./../slice/card";
 
 const BASE_URL = "https://vault.omise.co";
+const OMISE_URL = "https://api.omise.co";
 const PUBLIC_KEY = "pkey_test_5wvisbxphp1zapg8ie6";
 const SECRET_KEY = "skey_test_5wvisdjjoqmfof5npzw";
+const authHeader = `Basic ${Buffer.from(`${PUBLIC_KEY}:`).toString("base64")}`;
+const authSecretKey = `Basic ${Buffer.from(`${SECRET_KEY}:`).toString(
+  "base64"
+)}`;
 
 export const createTokenAction = createAsyncThunk(
   "createTokenAction",
   async (card: TCard, { rejectWithValue }) => {
-    const authHeader = `Basic ${Buffer.from(`${PUBLIC_KEY}:`).toString(
-      "base64"
-    )}`;
     const newCard = {
       card: {
         name: card.holderName,
@@ -31,8 +33,45 @@ export const createTokenAction = createAsyncThunk(
       });
       return response.data;
     } catch (error: any) {
-      console.log("ERROR: ", error);
       return rejectWithValue(error.response);
+    }
+  }
+);
+
+export const createCustomerAction = createAsyncThunk(
+  "createCustomerAction",
+  async (customer: { email: string }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(OMISE_URL + "/customers", customer, {
+        headers: {
+          Authorization: authSecretKey,
+        },
+      });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response);
+    }
+  }
+);
+
+type Charges = {
+  amount: string;
+  currency: string;
+  card: string;
+};
+
+export const createChargesAction = createAsyncThunk(
+  "createChargesAction",
+  async (charges: Charges, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(OMISE_URL + "/charges", charges, {
+        headers: {
+          Authorization: authSecretKey,
+        },
+      });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
     }
   }
 );
